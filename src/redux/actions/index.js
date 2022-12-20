@@ -4,6 +4,8 @@ import fetchCurrencies from '../../components/utils/fetch';
 export const LOGIN = 'LOGIN';
 export const CURRENCIES = 'CURRENCIES';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
+export const REMOVE_EXPENSES = 'REMOVE_EXPENSES';
+export const EDIT_EXPENSES = 'EDIT_EXPENSES';
 
 export const saveEmail = (dispatch, payload) => {
   dispatch({
@@ -23,6 +25,13 @@ export const saveExpense = async (dispatch, payload) => {
   payload.exchangeRates = json;
   dispatch({
     type: ADD_EXPENSES,
+    payload,
+  });
+};
+
+export const removeExpenses = (dispatch, payload) => {
+  dispatch({
+    type: REMOVE_EXPENSES,
     payload,
   });
 };
