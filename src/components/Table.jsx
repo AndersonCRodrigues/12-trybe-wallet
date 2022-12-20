@@ -2,7 +2,7 @@ import P from 'prop-types';
 import React, { Component } from 'react';
 import '../styles/Table.css';
 import { connect } from 'react-redux';
-import { removeExpenses } from '../redux/actions';
+import { editExpenses, removeExpenses } from '../redux/actions';
 
 class Table extends Component {
   state = {
@@ -17,9 +17,15 @@ class Table extends Component {
     removeExpenses(dispatch, remove);
   };
 
+  handleFind = (id) => {
+    const { dispatch } = this.props;
+    editExpenses(dispatch, id);
+  };
+
   render() {
     const { linha } = this.state;
     const { expenses } = this.props;
+
     return (
       <table>
         <thead>
@@ -43,6 +49,14 @@ class Table extends Component {
               </td>
               <td>Real</td>
               <td>
+                <button
+                  type="button"
+                  data-testid="edit-btn"
+                  onClick={ () => this.handleFind(item.id) }
+                >
+                  Editar
+
+                </button>
                 <button
                   type="button"
                   data-testid="delete-btn"
