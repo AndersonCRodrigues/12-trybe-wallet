@@ -1,6 +1,9 @@
+import fetchCurrencies from '../../components/utils/fetch';
+
 // Coloque aqui suas actions
 export const LOGIN = 'LOGIN';
 export const CURRENCIES = 'CURRENCIES';
+export const ADD_EXPENSES = 'ADD_EXPENSES';
 
 export const saveEmail = (dispatch, payload) => {
   dispatch({
@@ -10,9 +13,16 @@ export const saveEmail = (dispatch, payload) => {
 };
 
 export const arrayCurrencies = async (dispatch) => {
-  const endPoint = 'https://economia.awesomeapi.com.br/json/all';
-  const response = await fetch(endPoint);
-  const json = await response.json();
+  const json = await fetchCurrencies();
   const data = Object.keys(json).filter((moeda) => moeda !== 'USDT');
   dispatch({ type: CURRENCIES, payload: data });
+};
+
+export const saveExpense = async (dispatch, payload) => {
+  const json = await fetchCurrencies();
+  payload.exchangeRates = json;
+  dispatch({
+    type: ADD_EXPENSES,
+    payload,
+  });
 };

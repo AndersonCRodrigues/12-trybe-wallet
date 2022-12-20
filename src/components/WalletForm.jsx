@@ -2,17 +2,21 @@ import P from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Options from './Options';
-import { arrayCurrencies } from '../redux/actions';
+import { arrayCurrencies, saveExpense } from '../redux/actions';
+
+const INITIAL_STATE = {
+  valor: '',
+  moeda: 'USD',
+  pagamento: 'Dinheiro',
+  categoria: 'Alimentação',
+  descricao: '',
+};
 
 class WalletForm extends Component {
   state = {
     arrayPagamentos: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
     arrayCategorias: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
-    valor: 0,
-    moeda: 'USD',
-    pagamento: 'Dinheiro',
-    categoria: 'Alimentação',
-    descricao: '',
+    ...INITIAL_STATE,
   };
 
   componentDidMount() {
@@ -28,7 +32,21 @@ class WalletForm extends Component {
   handleClick = (e) => {
     e.preventDefault();
     const { moeda, pagamento, categoria, descricao, valor } = this.state;
-    console.log(moeda, pagamento, categoria, descricao, valor);
+    const { id, dispatch } = this.props;
+    const info = {
+      id,
+      value: valor,
+      description: descricao,
+      currency: moeda,
+      method: pagamento,
+      tag: categoria,
+    };
+
+    saveExpense(dispatch, info);
+
+    this.setState({
+      ...INITIAL_STATE,
+    });
   };
 
   render() {
@@ -112,10 +130,12 @@ class WalletForm extends Component {
 WalletForm.propTypes = {
   dispatch: P.func.isRequired,
   currencies: P.arrayOf(P.string).isRequired,
+  id: P.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  id: state.wallet.id,
 });
 
 export default connect(mapStateToProps)(WalletForm);
