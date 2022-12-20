@@ -1,9 +1,18 @@
 // Coloque aqui suas actions
-import LOGIN from './types';
+export const LOGIN = 'LOGIN';
+export const CURRENCIES = 'CURRENCIES';
 
-export default function saveEmail(dispatch, payload) {
+export const saveEmail = (dispatch, payload) => {
   dispatch({
     type: LOGIN,
     payload,
   });
-}
+};
+
+export const arrayCurrencies = async (dispatch) => {
+  const endPoint = 'https://economia.awesomeapi.com.br/json/all';
+  const response = await fetch(endPoint);
+  const json = await response.json();
+  const data = Object.keys(json).filter((moeda) => moeda !== 'USDT');
+  dispatch({ type: CURRENCIES, payload: data });
+};

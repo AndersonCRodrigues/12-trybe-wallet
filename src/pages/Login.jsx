@@ -1,7 +1,7 @@
 import React from 'react';
 import P from 'prop-types';
 import { connect } from 'react-redux';
-import saveEmail from '../redux/actions';
+import { saveEmail } from '../redux/actions';
 
 const NUMBER = 6;
 
